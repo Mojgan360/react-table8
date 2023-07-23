@@ -1,3 +1,4 @@
+import "./App.css";
 import ColumnData from "./components/table-8/ColumnData";
 
 function App() {
