@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   flexRender,
   getSortedRowModel,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 const BasicTable = ({ columns, data }) => {
@@ -18,13 +19,17 @@ const BasicTable = ({ columns, data }) => {
     []
   );
   const [sorting, setSorting] = useState([]);
+  const [filtering, setFiltering] = useState("");
+
   const table = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    state: { sorting: sorting },
+    getFilteredRowModel: getFilteredRowModel(),
+    state: { sorting: sorting, globalFilter: filtering },
     onSortingChange: setSorting,
+    onGlobalFilterChange: setFiltering,
   });
 
   // const {getCoreRowModel,flexRender} = useReactTable({
@@ -33,6 +38,7 @@ const BasicTable = ({ columns, data }) => {
   return (
     <div>
       BasicTable
+      <input value={filtering} onChange={(e) => setFiltering(e.target.value)} />
       <button className="btn btn-primary">Click me</button>
       <table className="table table-striped">
         <thead>
@@ -43,13 +49,16 @@ const BasicTable = ({ columns, data }) => {
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
                 >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
+                  {header.isPlaceholder ? null : (
+                    <div>
+                      {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
                       )}
-                  {{ asc: ">", desc: "<" }[header.column.getIsSorted()] ?? null}
+                      {{ asc: ">", desc: "<" }[header.column.getIsSorted()] ??
+                        null}
+                    </div>
+                  )}
                 </th>
               ))}
             </tr>
