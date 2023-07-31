@@ -1,17 +1,19 @@
 import React, { useState, useMemo } from "react";
-import mData from "./makedata.json";
+import mData from "../../makedata.json";
 import BasicTable from "./BasicTable";
+import SortTable from "./SortTable";
+import ResizeSortTable from "./ResizeSortTable";
+
 const ColumnData = () => {
   const [Data, setData] = React.useState(mData);
-  const data = useMemo(() => {
-    Data;
-  }, []);
-  /** "id": 1,
-    "first_name": "Locke",
-    "last_name": "Innerstone",
-    "email": "linnerstone0@paypal.com",
-    "gender": "Male",
-    "ip_address": "96.6.249.177" */
+  var FieldTypes = [
+    { value: "text", label: "text" },
+    { value: "picklist", label: "picklist" },
+    { value: "date", label: "date" },
+    { value: "userlist", label: "userlist" },
+    { value: "checkbox", label: "checkbox" },
+  ];
+
   const Columns = useMemo(() => {
     return [
       {
@@ -32,12 +34,14 @@ const ColumnData = () => {
       {
         header: "Email",
         accessorKey: "email",
-        footer: "Emai",
+        footer: "Email",
+        size: 100,
       },
       {
         header: "Gender",
         accessorKey: "gender",
         footer: "Gender",
+        Cell: () => <Select options={FieldTypes} />,
       },
       {
         header: "ipddress",
@@ -48,7 +52,9 @@ const ColumnData = () => {
   }, []);
   return (
     <div>
-      <BasicTable columns={Columns} data={Data} />
+      {/* <ResizeSortTable columns={Columns} data={Data} />
+      <SortTable columns={Columns} data={Data} />
+      <BasicTable columns={Columns} data={Data} /> */}
     </div>
   );
 };

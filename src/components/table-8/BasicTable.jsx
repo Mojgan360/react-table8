@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
 import "../../App.css";
 import {
   getCoreRowModel,
@@ -8,22 +8,20 @@ import {
 const BasicTable = ({ columns, data }) => {
   const defaultColumn = React.useMemo(
     () => ({
-      // Let's set up our default Filter UI
-      //  Filter: SearchColumn,
-      // minWidth: 30,
-      // width: 150,
-      // maxWidth: 100,
+
+      size: 150,
+      minSize: 20,
+      maxSize: Number.MAX_SAFE_INTEGER,
     }),
     []
   );
-  const [sorting, setSorting] = useState([]);
-  const [filtering, setFiltering] = useState("");
 
   const table = useReactTable({
     data,
     columns,
+    defaultColumn,
     enableColumnResizing: true,
-    columnResizeMode: "onChange",
+    columnResizeMode: "onChange", //onEnd
     getCoreRowModel: getCoreRowModel(),
     debugTable: true,
     debugHeaders: true,
@@ -36,7 +34,7 @@ const BasicTable = ({ columns, data }) => {
   return (
     <div className="p-2 block max-w-full overflow-x-scroll overflow-y-hidden">
       <div className="h-2" />
-      <table className="w-full ">
+      <table className="w-full table table-striped">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
